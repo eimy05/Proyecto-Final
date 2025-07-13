@@ -22,11 +22,11 @@ class CalculadoraEstructural:
         self.momento_en_empotramiento = -M 
         
     def calcular_cortante(self, x):
-        V = -self.reaccion_vertical  # Inicia con la reacción vertical (hacia arriba)
+        V = -self.reaccion_vertical
         for fuerza, posicion in self.cargas_equivalentes:
             if posicion <= x:
-                V += fuerza
-        return round(V, 2) #Resultado con dos decimales, se puede cambiar esto para mas presición
+                V -= fuerza  # Se suma al final, ya que está a la izquierda
+        return round(V, 2)  #Resultado con dos decimales, se puede cambiar esto para mas presición
 
     def calcular_momento(self, x):
         M = self.momento_en_empotramiento  # Aquí calcula un momento en un punto x cualquiera, el anterior es el del emportramiento
