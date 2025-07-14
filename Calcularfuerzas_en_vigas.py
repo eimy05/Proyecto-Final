@@ -14,9 +14,10 @@ class CalculadoraEstructural:
         self.momento = []
 
     def importar_datos_de_reaccion(self):    #Importar las clases de cargas y viga
-        self.reaccion_vertical = self.viga.reaccion_vertical
+        self.reaccion_vertical = -self.viga.reaccion_vertical
         self.cargas_equivalentes = self.viga.cargas_equivalentes
-        self.calcular_momento_en_empotramiento()
+        self.momento_en_empotramiento = -self.viga.momento_en_apoyo
+        self.pos_max_carga = max(pos for _, pos in self.cargas_equivalentes) if self.cargas_equivalentes else 0
 
     def calcular_momento_en_empotramiento(self):  #El momento en el empotramiento no puede ser cero debido al tipo de "viga" que se plantea, entonces toca calcularlo
         M = 0
@@ -25,7 +26,7 @@ class CalculadoraEstructural:
         self.momento_en_empotramiento = -M 
         
     def calcular_cortante(self, x):
-        V = self.reaccion_vertical
+        V = -self.reaccion_vertical
 
         for carga in self.viga.cargas:
             if isinstance(carga, CargaPuntual):  #Pa que calcule correctamente no solo la puntual toca ir carga por carga
@@ -63,11 +64,15 @@ class CalculadoraEstructural:
 
 
     def calcular_momento(self, x):
+        if x >= self.pos_max_carga:
+            return 0.0
+        
         M = self.momento_en_empotramiento  # Aquí calcula un momento en un punto x cualquiera, el anterior es el del emportramiento
+        M -= self.reaccion_vertical * x
         for fuerza, posicion in self.cargas_equivalentes:
-            if posicion >= x:  # Evaluas cargas a la derecha del punto
-                brazo = posicion - x
-                M += fuerza * brazo
+            if posicion <= x:  # Evaluas cargas a la derecha del punto
+                brazo = x - posicion
+                M -= fuerza * brazo
         return round(M, 2)
 
     def calcular_diagramas(self):

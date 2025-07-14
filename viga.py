@@ -68,6 +68,7 @@ class Viga:
         print(f"Momento en el empotramiento: {momento_en_apoyo} {giro} N·m")
 
         self.reaccion_vertical = reaccion_vertical
+        self.momento_en_apoyo = momento_en_apoyo
     
 
 
