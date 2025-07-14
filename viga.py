@@ -61,12 +61,11 @@ class Viga:
             reaccion_vertical += F
             momento_en_apoyo += F * x
 
-
-        print(f"Reacción vertical en el empotramiento: {-reaccion_vertical} N")
-        #El signo negativo indica que la reacción es sentido contrario a la sumatoria de fuerzas.
-        #Usaremos por convención el signo negativo para indicar que la reacción es hacia abajo. Pasa
-        #lo mismo con el momento. El signo negativo indica que el momento es en sentido horario.
-        print(f"Momento en el empotramiento: {-momento_en_apoyo} N·m")
+        flecha = "↑" if reaccion_vertical > 0 else ("↓" if reaccion_vertical < 0 else "•")
+        print(f"Reacción vertical en el empotramiento: {-reaccion_vertical} N {flecha}")
+        
+        giro = "↺" if momento_en_apoyo > 0 else ("↻" if momento_en_apoyo < 0 else "•")
+        print(f"Momento en el empotramiento: {momento_en_apoyo} {giro} N·m")
 
         self.reaccion_vertical = reaccion_vertical
     

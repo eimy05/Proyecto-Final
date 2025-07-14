@@ -8,6 +8,8 @@ from Calcularfuerzas_en_vigas import CalculadoraEstructural
 v = Viga(5)
 
 # Agregar cargas
+#Nota: La posición se mide de izquierda a derecha, y las cargas positivas indican fuerzas hacia abajo.
+#Un momento positivo indica un giro en sentido antihorario.
 v.agregar_carga(CargaPuntual(2, 100))                         #Carga puntual (posición, magnitud)
 v.agregar_carga(CargaDistribuidaRectangular(0, 0, 0))         #Carga rectangular(inicio, fin, magnitud en N/m)
 v.agregar_carga(CargaDistribuidaTriangular(0, 0, 0, True))    # Carga triangular (inicio, fin, magnitud max en N/m, True=⬊)
@@ -15,7 +17,7 @@ v.agregar_carga(CargaDistribuidaTriangular(0, 0, 0, True))    # Carga triangular
 # Calcular reacciones
 v.calcular_reacciones()
 
-# Analizar esfuerzos
+# Calcular fuerza cortante y momento
 calc = CalculadoraEstructural(viga=v)
 calc.importar_datos_de_reaccion()
 calc.calcular_diagramas()
