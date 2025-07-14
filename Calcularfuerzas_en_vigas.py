@@ -17,7 +17,18 @@ class CalculadoraEstructural:
         self.reaccion_vertical = -self.viga.reaccion_vertical
         self.cargas_equivalentes = self.viga.cargas_equivalentes
         self.momento_en_empotramiento = -self.viga.momento_en_apoyo
-        self.pos_max_carga = max(pos for _, pos in self.cargas_equivalentes) if self.cargas_equivalentes else 0
+        
+        dist_fins = [
+            carga.fin
+            for carga in self.viga.cargas
+            if isinstance(carga, (CargaDistribuidaRectangular, CargaDistribuidaTriangular))
+        ]
+        self.fin_max = max(dist_fins) if dist_fins else 0
+
+        self.usar_integracion = any(
+        isinstance(c, (CargaDistribuidaRectangular, CargaDistribuidaTriangular))
+        for c in self.viga.cargas
+        )
 
     def calcular_momento_en_empotramiento(self):  #El momento en el empotramiento no puede ser cero debido al tipo de "viga" que se plantea, entonces toca calcularlo
         M = 0
@@ -79,12 +90,43 @@ class CalculadoraEstructural:
         self.cortante.clear()
         self.momento.clear()
 
+        # Paso 1: punto inicial
         x = 0.0
-        while round(x, 5) <= self.viga.longitud:
-            V = self.calcular_cortante(x)
-            M = self.calcular_momento(x)
+        V_prev = self.calcular_cortante(x)
+        self.cortante.append((round(x, 2), V_prev))
 
-            self.cortante.append((round(x, 2), V))
-            self.momento.append((round(x, 2), M))
+        if self.usar_integracion:
+            M = self.momento_en_empotramiento
+            self.momento.append((round(x, 2), round(M, 2)))
 
+            # Paso 2: integración trapezoidal
             x += self.precision
+            while round(x, 5) <= self.viga.longitud:
+                V_curr = self.calcular_cortante(x)
+
+                if x <= self.fin_max:
+                    # trapezoide: area entre V_prev y V_curr
+                    M = M + (V_prev + V_curr) / 2 * self.precision
+                    # no permitimos M > 0
+                    if M > 0:
+                        M = 0.0
+                else:
+                    M = 0.0
+
+                self.cortante.append((round(x, 2), V_curr))
+                self.momento.append((round(x, 2), round(M, 2)))
+
+            
+                V_prev = V_curr
+                x += self.precision
+
+        else:
+            # tu bucle original para cargas puntuales
+            while round(x, 5) <= self.viga.longitud:
+                V = self.calcular_cortante(x)
+                M = self.calcular_momento(x)
+
+                self.cortante.append((round(x, 2), V))
+                self.momento.append((round(x, 2), M))
+                x += self.precision
+

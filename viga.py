@@ -48,9 +48,9 @@ class Viga:
                 base = carga.fin - carga.inicio
                 F = 0.5 * carga.intensidad_maxima * base
                 if carga.hacia_derecha:
-                    x = carga.inicio + (2 / 3) * base
-                else:
                     x = carga.inicio + (1 / 3) * base
+                else:
+                    x = carga.inicio + (2 / 3) * base
                     
             else:
                 print("Tipo de carga no reconocido.")
