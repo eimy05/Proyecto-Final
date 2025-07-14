@@ -68,7 +68,7 @@ class Viga:
         #lo mismo con el momento. El signo negativo indica que el momento es en sentido horario.
         print(f"Momento en el empotramiento: {-momento_en_apoyo} N·m")
 
-        self.reaccion_vertical = -reaccion_vertical
+        self.reaccion_vertical = reaccion_vertical
     
 
 

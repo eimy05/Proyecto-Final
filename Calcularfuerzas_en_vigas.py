@@ -1,4 +1,7 @@
 #Crear la clase pa analizar las cargas internas 
+from cargapuntual import CargaPuntual
+from cargarectangular import CargaDistribuidaRectangular
+from cargatriangular import CargaDistribuidaTriangular
 
 class CalculadoraEstructural:
     def __init__(self, viga, precision=0.1):
@@ -22,11 +25,42 @@ class CalculadoraEstructural:
         self.momento_en_empotramiento = -M 
         
     def calcular_cortante(self, x):
-        V = -self.reaccion_vertical
-        for fuerza, posicion in self.cargas_equivalentes:
-            if posicion <= x:
-                V -= fuerza  # Se suma al final, ya que está a la izquierda
-        return round(V, 2)  #Resultado con dos decimales, se puede cambiar esto para mas presición
+        V = self.reaccion_vertical
+
+        for carga in self.viga.cargas:
+            if isinstance(carga, CargaPuntual):  #Pa que calcule correctamente no solo la puntual toca ir carga por carga
+                if carga.posicion <= x:
+                    V -= carga.magnitud
+
+            elif isinstance(carga, CargaDistribuidaRectangular):
+                if x >= carga.inicio:
+                    if x <= carga.fin:
+                        largo_activo = x - carga.inicio  #si no se pone asi, no se verá reflejado la forma correcta de la grafica ya que calculara mal la cortante donde se  haga el corte
+                    else:
+                        largo_activo = carga.fin - carga.inicio
+                    V -= carga.intensidad * largo_activo
+
+            elif isinstance(carga, CargaDistribuidaTriangular):
+                base_total = carga.fin - carga.inicio
+                if base_total == 0 or carga.intensidad_maxima == 0:
+                    continue  # De esta forma, si no hay una carga triangular, no ocurrira un error por dividir entre cero
+
+                if x >= carga.inicio and  x <= carga.fin:
+                    base_activa = x - carga.inicio
+                else:
+                        base_activa = base_total
+
+                altura = (
+                        carga.intensidad_maxima * (base_activa / base_total)
+                    if carga.hacia_derecha
+                    else carga.intensidad_maxima * (1 - (base_activa / base_total))
+                )
+
+                F = 0.5 * altura * base_activa
+                V -= F
+
+        return round(V, 2)
+
 
     def calcular_momento(self, x):
         M = self.momento_en_empotramiento  # Aquí calcula un momento en un punto x cualquiera, el anterior es el del emportramiento
@@ -40,12 +74,12 @@ class CalculadoraEstructural:
         self.cortante.clear()
         self.momento.clear()
 
-        x = self.viga.longitud
-        while x >= 0:
+        x = 0.0
+        while round(x, 5) <= self.viga.longitud:
             V = self.calcular_cortante(x)
             M = self.calcular_momento(x)
 
             self.cortante.append((round(x, 2), V))
             self.momento.append((round(x, 2), M))
 
-            x -= self.precision
+            x += self.precision

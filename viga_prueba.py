@@ -8,9 +8,9 @@ from Calcularfuerzas_en_vigas import CalculadoraEstructural
 v = Viga(5)
 
 # Agregar cargas
-v.agregar_carga(CargaPuntual(2, 100))                         # Carga puntual
+v.agregar_carga(CargaPuntual(0, 0))                         # Carga puntual
 v.agregar_carga(CargaDistribuidaRectangular(0, 0, 0))        # Carga rectangular
-v.agregar_carga(CargaDistribuidaTriangular(0, 0, 0))         # Carga triangular
+v.agregar_carga(CargaDistribuidaTriangular(3, 4, 50))         # Carga triangular
 
 # Calcular reacciones
 v.calcular_reacciones()
