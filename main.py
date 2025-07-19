@@ -1,7 +1,15 @@
+from calculos import obtener_resultados
 from graficos import graficar_cortante, graficar_momento
-x = [0, 6, 18, 32]
-V = [515, -480, -400, -365] # fuerza cortante
-M = [0, 3300, 5110, 0] # momento flector
+
+# Aquí se actualizan los datos manualmente o desde Salomé
+posiciones = [0, 2, 4]  # en metros
+fuerzas = [100, -300, 10]  # en Newtons
+
+print("Posiciones:", posiciones)
+print("Fuerzas:", fuerzas)
+
+# El código genera automáticamente los valores V(x) y M(x)
+x, V, M = obtener_resultados(posiciones, fuerzas)
 
 def mostrar_menu():
     print("\n--- Menú de visualización de la viga ---")
@@ -20,4 +28,7 @@ while True:
         print("¡Hasta luego!")
         break
     else:
-        print("Opción no válida. Intente de nuevo.")
+        print("Opción no válida, Intente de nuevo.")
+
+print(f"Fuerza total: {sum(fuerzas)} N")
+print(f"Momento final: {round(M[-1], 2)} N·m")
