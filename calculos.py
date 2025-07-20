@@ -1,8 +1,10 @@
-def obtener_datos_de_salome():
-    # Simulación: reemplaza esto con los datos que te exporta Salomé
-    posiciones = [0, 1, 2, 3, 4, 5]
-    fuerzas =    [2, 2, 2, 0, 0, 0]
-    momentos =   [-4.67, -3.67, -2.67, -0.67, 0, 0]
+from Calcularfuerzas_en_vigas import CalculadoraEstructural
 
-    return posiciones, fuerzas, momentos
-
+def obtener_datos_reales(viga):
+    calculadora = CalculadoraEstructural(viga=viga, precision=0.1)
+    calculadora.calcular_diagramas()
+    return (
+        [x for x, _ in calculadora.cortante],
+        [v for _, v in calculadora.cortante],
+        [m for _, m in calculadora.momento]
+    )
