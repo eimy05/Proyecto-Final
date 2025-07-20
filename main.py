@@ -1,21 +1,14 @@
-from calculos import obtener_resultados
 from graficos import graficar_cortante, graficar_momento
-
-# Aquí se actualizan los datos manualmente o desde Salomé
-posiciones = [0, 2, 4]  # en metros
-fuerzas = [100, -300, 10]  # en Newtons
-
-print("Posiciones:", posiciones)
-print("Fuerzas:", fuerzas)
-
-# El código genera automáticamente los valores V(x) y M(x)
-x, V, M = obtener_resultados(posiciones, fuerzas)
+from calculos import obtener_datos_de_salome
 
 def mostrar_menu():
     print("\n--- Menú de visualización de la viga ---")
     print("1. Mostrar diagrama de fuerza cortante")
     print("2. Mostrar diagrama de momento flector")
     print("0. Salir")
+
+# Obtener datos actualizados desde Salomé
+x, V, M = obtener_datos_de_salome()
 
 while True:
     mostrar_menu()
@@ -28,7 +21,4 @@ while True:
         print("¡Hasta luego!")
         break
     else:
-        print("Opción no válida, Intente de nuevo.")
-
-print(f"Fuerza total: {sum(fuerzas)} N")
-print(f"Momento final: {round(M[-1], 2)} N·m")
+        print("Opción no válida. Intente de nuevo.")
