@@ -47,6 +47,9 @@ class CalculadoraEstructural:
                     V -= contribucion
                     
             elif isinstance(carga, CargaDistribuidaTriangular):
+                base_total = 0
+                if base_total == 0:  # ← Nueva validación
+                    continue
                 if x >= carga.inicio:
                     base_total = carga.fin - carga.inicio
                     if x <= carga.fin:
