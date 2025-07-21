@@ -35,13 +35,13 @@ Este proyecto implementa una calculadora interactiva de vigas en voladizo, desar
 
 git clone https://github.com/eimy05/Proyecto-Final.git
 
-## 2. Instalar dependencias
+### 2. Instalar dependencias
 
 Este proyecto requiere la librería matplotlib para generar los gráficos. Se puede instalar desde la terminal utilizando el comando:
 
 pip install matplotlib
 
-## 3. Ejecutar el programa
+### 3. Ejecutar el programa
 
 Una vez instalado el repositorio y la librería matplotlib, se corre el archivo principal, y se siguen las instrucciones del menú interactivo para obtener los gráficos:
 
