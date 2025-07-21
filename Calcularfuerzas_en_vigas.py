@@ -58,13 +58,13 @@ class CalculadoraEstructural:
                 else:
                         base_activa = base_total
                     
-                    if carga.hacia_derecha:
+                if carga.hacia_derecha:
                         intensidad = carga.intensidad_maxima * (base_activa / base_total)
-                    else:
+                else:
                         intensidad = carga.intensidad_maxima * (1 - (base_activa / base_total))
                     
-                    contribucion = 0.5 * intensidad * base_activa
-                    V -= contribucion
+                contribucion = 0.5 * intensidad * base_activa
+                V -= contribucion
         
         return round(V, 2)
 
