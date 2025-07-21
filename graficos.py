@@ -1,5 +1,5 @@
 import matplotlib
-matplotlib.use('TkAgg')  # ¡Esta línea debe ir ANTES de importar pyplot!
+matplotlib.use('TkAgg')  
 import matplotlib.pyplot as plt
 
 def graficar_diagramas(x, V, M, longitud_viga):
