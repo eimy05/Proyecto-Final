@@ -8,6 +8,8 @@ class CalculadoraEstructural:
         self.viga = viga
         self.precision = precision
         self.reaccion_vertical = 0
+        self.precision = precision
+        self.reaccion_vertical = 0
         self.momento_en_empotramiento = 0
         self.cortante = []
         self.momento = []
@@ -47,14 +49,13 @@ class CalculadoraEstructural:
                     V -= contribucion
                     
             elif isinstance(carga, CargaDistribuidaTriangular):
-                base_total = 0
-                if base_total == 0:  # ← Nueva validación
-                    continue
-                if x >= carga.inicio:
-                    base_total = carga.fin - carga.inicio
-                    if x <= carga.fin:
-                        base_activa = x - carga.inicio
-                    else:
+                base_total = carga.fin - carga.inicio
+                if base_total == 0 or carga.intensidad_maxima == 0:
+                    continue  # De esta forma, si no hay una carga triangular, no ocurrira un error por dividir entre cero
+
+                if x >= carga.inicio and  x <= carga.fin:
+                    base_activa = x - carga.inicio
+                else:
                         base_activa = base_total
                     
                     if carga.hacia_derecha:
