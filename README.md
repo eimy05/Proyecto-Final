@@ -1,6 +1,6 @@
 ## Calculadora de Vigas en Voladizo
 
-Este proyecto implementa una calculadora interactiva de vigas en voladizo, desarrollada en Python utilizando programación orientada a objetos (POO). Permite al usuario definir la longitud de la viga, diferentes tipos de cargas (puntuales, distribuidas rectangulares y triangulares), calcular las reacciones en el empotramiento, obtener los diagramas de fuerza cortante y momento flector, y visualizar los resultados de forma gráfica.
+Este proyecto implementa una calculadora interactiva de vigas en voladizo, desarrollada en Python utilizando programación orientada a objetos (POO). Permite al usuario definir la longitud de la viga, diferentes tipos de cargas (puntuales, distribuidas rectangulares y triangulares), calcular las reacciones en el empotramiento, calcular la fuerza cortante y momento flector, y visualizar los resultados de forma gráfica mediante diagramas de fuerza cortante y momento flector.
 
 ---
 
