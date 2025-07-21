@@ -32,6 +32,8 @@ class Viga:
         reaccion_vertical = 0 #Inician en cero las reacciones en el empotramiento
         momento_en_apoyo = 0
 
+        self.cargas_equivalentes = []
+
         for carga in self.cargas:
             if isinstance(carga, CargaPuntual):
                 F = carga.magnitud
@@ -46,22 +48,28 @@ class Viga:
                 base = carga.fin - carga.inicio
                 F = 0.5 * carga.intensidad_maxima * base
                 if carga.hacia_derecha:
-                    x = carga.inicio + (2 / 3) * base
-                else:
                     x = carga.inicio + (1 / 3) * base
-
+                else:
+                    x = carga.inicio + (2 / 3) * base
+                    
             else:
                 print("Tipo de carga no reconocido.")
                 continue
+            
+            self.cargas_equivalentes.append((F, x))
 
             reaccion_vertical += F
             momento_en_apoyo += F * x
 
-        print(f"Reacción vertical en el empotramiento: {-reaccion_vertical} N")
-        #El signo negativo indica que la reacción es sentido contrario a la sumatoria de fuerzas.
-        #Usaremos por convención el signo negativo para indicar que la reacción es hacia abajo. Pasa
-        #lo mismo con el momento. El signo negativo indica que el momento es en sentido horario.
-        print(f"Momento en el empotramiento: {-momento_en_apoyo} N·m")
+        flecha = "↑" if reaccion_vertical > 0 else ("↓" if reaccion_vertical < 0 else "•")
+        print(f"Reacción vertical en el empotramiento: {-reaccion_vertical} N {flecha}")
+        
+        giro = "↺" if momento_en_apoyo > 0 else ("↻" if momento_en_apoyo < 0 else "•")
+        print(f"Momento en el empotramiento: {momento_en_apoyo} {giro} N·m")
+
+        self.reaccion_vertical = reaccion_vertical
+        self.momento_en_apoyo = momento_en_apoyo
+    
 
 
 
