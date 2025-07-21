@@ -10,7 +10,7 @@ def probar_viga():
 
     # Agregar cargas de prueba (puedes modificar estos valores)
     print("\n=== CONFIGURACIÓN DE CARGA ===")
-    v.agregar_carga(CargaPuntual(2, 200))  # Carga puntual de 10 N a 3m
+    v.agregar_carga(CargaPuntual(3, 10))  # Carga puntual de 10 N a 3m
     v.agregar_carga(CargaDistribuidaRectangular(0, 0, 0))  # Carga rectangular 5 N/m entre 1m-4m
     v.agregar_carga(CargaDistribuidaTriangular(0, 0, 0, True))  # Carga triangular ↗ 0-8 N/m entre 2m-5m
 
